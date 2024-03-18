@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Paper Scissors</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: linear-gradient(to bottom, #2980b9, #6dd5fa, #ffffff);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  #game-container {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  #game-container img {
+    width: 100px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+
+  #game-container img:hover {
+    transform: scale(1.1);
+  }
+
+  #game-container p {
+    color: #34495e;
+    font-size: 18px;
+    margin: 5px 0;
+  }
+
+  #result {
+    font-size: 24px;
+    margin-top: 20px;
+    color: #2ecc71;
+  }
+
+  #user-score, #computer-score {
+    font-weight: bold;
+    color: #e74c3c;
+  }
+
+  #reset-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  #reset-button:hover {
+    background-color: #2980b9;
+  }
+
+  #game-result {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #f39c12;
+  }
+</style>
+</head>
+<body>
+<div id="game-container">
+  <img src="rock.png" alt="Rock" id="rock">
+  <img src="paper.png" alt="Paper" id="paper">
+  <img src="scissor.jpg" alt="Scissors" id="scissors">
+  <p>Let's Play !</p>
+  <p id="user-choice"></p>
+  <p id="computer-choice"></p>
+  <p id="result"></p>
+  <p>Score: <span id="user-score">0</span> - <span id="computer-score">0</span></p>
+  <button id="reset-button">Reset Game</button>
+  <p id="game-result"></p>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    var userScore = 0;
+    var computerScore = 0;
+
+    var choices = ['Rock', 'Paper', 'Scissors'];
+    var outcomes = {
+      'Rock': {'Rock': 'Tie', 'Paper': 'Lose', 'Scissors': 'Win'},
+      'Paper': {'Rock': 'Win', 'Paper': 'Tie', 'Scissors': 'Lose'},
+      'Scissors': {'Rock': 'Lose', 'Paper': 'Win', 'Scissors': 'Tie'}
+    };
+
+    function getComputerChoice() {
+      return choices[Math.floor(Math.random() * choices.length)];
+    }
+
+    function determineWinner(userChoice, computerChoice) {
+      $('#user-choice').text('Your Choice: ' + userChoice);
+      $('#computer-choice').text('Computer Choice: ' + computerChoice);
+      var result = outcomes[userChoice][computerChoice];
+      $('#result').text('Result: ' + result);
+      if (result === 'Win') {
+        userScore++;
+      } else if (result === 'Lose') {
+        computerScore++;
+      }
+      $('#user-score').text(userScore);
+      $('#computer-score').text(computerScore);
+      if (userScore === 5 || computerScore === 5) {
+        if (userScore > computerScore) {
+          $('#game-result').text('You win the game!');
+        } else if (userScore < computerScore) {
+          $('#game-result').text('Computer wins the game!');
+        } else {
+          $('#game-result').text('It\'s a tie!');
+        }
+        // Disable click events on choices
+        $('#rock, #paper, #scissors').off('click');
+        // Hide reset button
+        $('#reset-button').hide();
+      }
+    }
+
+    $('#rock').click(function() {
+      var computerChoice = getComputerChoice();
+      determineWinner('Rock', computerChoice);
+    });
+
+    $('#paper').click(function() {
+      var computerChoice = getComputerChoice();
+      determineWinner('Paper', computerChoice);
+    });
+
+    $('#scissors').click(function() {
+      var computerChoice = getComputerChoice();
+      determineWinner('Scissors', computerChoice);
+    });
+
+    $('#reset-button').click(function() {
+      userScore = 0;
+      computerScore = 0;
+      $('#user-score').text(userScore);
+      $('#computer-score').text(computerScore);
+      $('#game-result').text('');
+      // Re-enable click events on choices
+      $('#rock, #paper, #scissors').on('click');
+      // Show reset button
+      $('#reset-button').show();
+    });
+  });
+</script>
+</body>
+</html>

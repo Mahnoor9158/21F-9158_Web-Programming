@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Clock</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .clock-section {
+    width: 120px;
+    text-align: center;
+    margin: 0 10px;
+  }
+
+  .clock-heading {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+  }
+
+  .clock-value {
+    font-size: 2em;
+    color: #333;
+    background-color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+</style>
+</head>
+<body>
+<div class="clock-section" style="background-color: #3498db;">
+  <h2 class="clock-heading">Hours</h2>
+  <div class="clock-value" id="hours">00</div>
+</div>
+<div class="clock-section" style="background-color: #2ecc71;">
+  <h2 class="clock-heading">Minutes</h2>
+  <div class="clock-value" id="minutes">00</div>
+</div>
+<div class="clock-section" style="background-color: #e67e22;">
+  <h2 class="clock-heading">Seconds</h2>
+  <div class="clock-value" id="seconds">00</div>
+</div>
+<div class="clock-section" style="background-color: #27ae60;">
+  <h2 class="clock-heading">Period</h2>
+  <div class="clock-value" id="period">AM</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    function updateClock() {
+      var now = new Date();
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var seconds = now.getSeconds();
+      var period = hours >= 12 ? 'PM' : 'AM';
+
+      hours = hours % 12;
+      hours = hours ? hours : 12; // Convert midnight to 12
+
+      $('#hours').text(hours < 10 ? '0' + hours : hours);
+      $('#minutes').text(minutes < 10 ? '0' + minutes : minutes);
+      $('#seconds').text(seconds < 10 ? '0' + seconds : seconds);
+      $('#period').text(period);
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // Initial call to display clock immediately
+  });
+</script>
+</body>
+</html>
